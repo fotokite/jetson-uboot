@@ -41,6 +41,19 @@ U_BOOT_CMD(
 	"[loadAddress] [[hostIPaddr:]bootfilename]"
 );
 
+#ifdef CONFIG_CMD_MAVLINK
+static int do_mavlink_buttonpressed(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
+{
+    return netboot_common(MAVLINK, cmdtp, argc, argv);
+}
+
+U_BOOT_CMD(
+    mavlink_buttonpressed, 3, 0, do_mavlink_buttonpressed,
+    "Returns success if a mavlink long button press event has been received. Call this after setting up the network with `run boot_net_pci_enum; setenv autoload no; dhcp`.",
+    "[loadAddress] [[senderIPaddr:]port]"
+);
+#endif
+
 #ifdef CONFIG_CMD_TFTPPUT
 int do_tftpput(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 {

@@ -291,6 +291,41 @@
 	BOOT_TARGET_DEVICES_references_DHCP_without_CONFIG_CMD_DHCP
 #endif
 
+#if defined(CONFIG_CMD_MAVLINK)
+#define BOOTENV_DEV_MAVLINK(devtypeu, devtypel, instance) \
+	"boot_helper_recovery=" \
+		"setenv devtype mmc; " \
+		"setenv devnum 0; " \
+		"setenv devplist " BOOT_TARGET_DEFAULTDEVPLIST "; " \
+		"setenv distro_bootpart " BOOT_TARGET_DEFAULTDEVPLIST "; " \
+		"setenv prefix /boot/recovery/; " \
+		"run scan_dev_for_extlinux;\0" \
+	\
+	"bootcmd_mavlink=" \
+		"if test -e mmc 0:" BOOT_TARGET_DEFAULTDEVPLIST " /boot/performrecovery.flag ; then " \
+			"echo booting into recovery due to file ; " \
+			"run boot_helper_recovery; " \
+			"echo Failed to boot into recovery based on file, doing regular boot ; " \
+		"fi; " \
+		BOOTENV_RUN_NET_PCI_ENUM \
+		"setenv autoload no; " \
+		"setenv netretry no; " \
+		"if mavlink_buttonpressed  ${scriptaddr} 192.168.2.51:12561 ; then " \
+			"echo booting into recovery due to button press ; " \
+			"run boot_helper_recovery; " \
+			"echo Failed to boot into recovery, doing regular boot ; " \
+		"fi; " \
+		"setenv prefix /boot/; " \
+		"run bootcmd_mmc0\0"
+#define BOOTENV_DEV_NAME_MAVLINK(devtypeu, devtypel, instance) \
+	"mavlink "
+#else
+#define BOOTENV_DEV_MAVLINK \
+	BOOT_TARGET_DEVICES_references_MAVLINK_without_CONFIG_CMD_MAVLINK
+#define BOOTENV_DEV_NAME_MAVLINK \
+	BOOT_TARGET_DEVICES_references_MAVLINK_without_CONFIG_CMD_DHCP
+#endif
+
 #if defined(CONFIG_CMD_DHCP) && defined(CONFIG_CMD_PXE)
 #define BOOTENV_DEV_PXE(devtypeu, devtypel, instance) \
 	"bootcmd_pxe=" \

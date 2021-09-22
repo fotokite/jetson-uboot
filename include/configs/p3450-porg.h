@@ -29,7 +29,7 @@
 
 /* Only MMC1/PXE/DHCP for now, add USB back in later when supported */
 #define BOOT_TARGET_DEVICES(func) \
-	func(MMC, mmc, 1) \
+	func(MAVLINK, mavlink, na) \
 	func(MMC, mmc, 0) \
 	func(PXE, pxe, na) \
 	func(DHCP, dhcp, na)

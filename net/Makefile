@@ -20,6 +20,7 @@ endif
 obj-$(CONFIG_CMD_NET)  += eth_common.o
 obj-$(CONFIG_CMD_LINK_LOCAL) += link_local.o
 obj-$(CONFIG_CMD_NET)  += net.o
+obj-$(CONFIG_CMD_MAVLINK) += mavlink.o
 obj-$(CONFIG_CMD_NFS)  += nfs.o
 obj-$(CONFIG_CMD_PING) += ping.o
 obj-$(CONFIG_CMD_RARP) += rarp.o

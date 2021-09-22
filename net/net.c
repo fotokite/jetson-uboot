@@ -63,6 +63,12 @@
  *	We want:	- load the boot file
  *	Next step:	none
  *
+ * MAVLINK:
+ *
+ *	Prerequisites:	- own ethernet address
+ *	We want:	- check if we received a specific mavlink message
+ *	Next step:	none
+ *
  * NFS:
  *
  *	Prerequisites:	- own ethernet address
@@ -101,6 +107,7 @@
 #include "dns.h"
 #endif
 #include "link_local.h"
+#include "mavlink.h"
 #include "nfs.h"
 #include "ping.h"
 #include "rarp.h"
@@ -466,6 +473,12 @@ restart:
 			net_ip.s_addr = 0;
 			bootp_request();
 			break;
+
+#if defined(CONFIG_CMD_MAVLINK)
+		case MAVLINK:
+			mavlink_start();
+			break;
+#endif
 
 #if defined(CONFIG_CMD_RARP)
 		case RARP:
@@ -1343,6 +1356,9 @@ common:
 	case BOOTP:
 	case CDP:
 	case DHCP:
+#ifdef CONFIG_CMD_MAVLINK
+	case MAVLINK:
+#endif
 	case LINKLOCAL:
 		if (memcmp(net_ethaddr, "\0\0\0\0\0\0", 6) == 0) {
 			int num = eth_get_dev_index();

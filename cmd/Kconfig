@@ -486,6 +486,11 @@ config CMD_DHCP
 	help
 	  Boot image via network using DHCP/TFTP protocol
 
+config CMD_MAVLINK
+	bool "mavlinkboot"
+	help
+	  Boot based on whether a specific mavlink message is received
+
 config CMD_NFS
 	bool "nfs"
 	default y
